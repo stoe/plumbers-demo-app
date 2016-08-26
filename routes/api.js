@@ -11,7 +11,8 @@ const pkg = require('../package.json');
 const client = new GitHubApi({
   debug: true,
   headers: {
-    'user-agent': gh.USER_AGENT
+    'user-agent': gh.USER_AGENT,
+    accept: 'application/vnd.github.squirrel-girl-preview'
   },
   Promise: require('bluebird')
 });
@@ -107,10 +108,20 @@ router.post('/', (req, res) => {
   let repo = body.repository.name;
 
   // booleans
-  let isPR       = !!body && body.pull_request,
-      isComment  = body && body.comment;
+  let isPR      = !!body && body.pull_request,
+      isComment = body && body.comment;
 
-  if (isPR && !['labeled', 'unlabeled'].includes(action)) {
+  // action types
+  let triggerActions = [
+        'opened', 'reopened', 'edited', 'synchronized'
+      ],
+      ignoreActions  = [
+        'closed', 'assigned', 'unassigned', 'labeled', 'unlabeled'
+      ];
+
+  if (isPR && !ignoreActions.includes(action) && triggerActions.includes(action)) {
+
+    // *** Pull Requests & Commits ***
 
     // <debug>
     // console.log('\n-----\n');
@@ -118,9 +129,9 @@ router.post('/', (req, res) => {
     // console.log('\n-----\n');
     // </debug>
 
-    let pr     = body.pull_request,
-        user   = pr.user.login,
-        sha = pr.head.sha;
+    let pr   = body.pull_request,
+        user = pr.user.login,
+        sha  = pr.head.sha;
 
     let options = {
       user: user,
@@ -139,7 +150,9 @@ router.post('/', (req, res) => {
       res.sendStatus(200);
     }).catch(sendErrorResponse.bind(res));
 
-  } else if (isComment) {
+  } else if (isComment && triggerActions.includes(action)) {
+
+    // *** Comments ***
 
     // <debug>
     // console.log('\n-----\n');
@@ -178,7 +191,6 @@ router.post('/', (req, res) => {
   } else {
     doNothing(res);
   }
-
 
 });
 
