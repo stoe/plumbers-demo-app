@@ -1,0 +1,34 @@
+{
+  "name": "plumbers-demo-app",
+  "version": "0.0.1",
+  "description": "The Plumbers Guide to the Galaxy - Implementing a CI/CD pipeline with GitHub",
+  "keywords": [
+    "github",
+    "integrations",
+    "ci",
+    "cd"
+  ],
+  "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "Stefan Stölzle",
+    "email": "stefan@github.com",
+    "url": "https://github.com/stoe/"
+  },
+  "contributors": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stoe/plumbers-demo-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/stoe/plumbers-demo-app/issues"
+  },
+  "engines": {
+    "node": ">=6.3",
+    "npm": ">=3.10"
+  },
+  "scripts": {},
+  "preferGlobal": true,
+  "dependencies": {},
+  "devDependencies": {}
+}

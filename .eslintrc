@@ -1,0 +1,36 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "presets": [
+    "es2015"
+  ],
+  "rules": {
+    "no-multi-spaces": 0,
+    "wrap-iife": [
+      2,
+      "inside"
+    ],
+    "strict": 2,
+    "no-unused-vars": 1,
+    "brace-style": [
+      2,
+      "1tbs"
+    ],
+    "consistent-this": [
+      1,
+      "me"
+    ],
+    "quote-props": [
+      1,
+      "as-needed"
+    ],
+    "quotes": [
+      2,
+      "single"
+    ]
+  }
+}
