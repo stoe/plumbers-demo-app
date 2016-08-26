@@ -29,7 +29,7 @@
   },
   "scripts": {
     "start": "node ./bin/www",
-    "test": "snyk test && grunt test"
+    "test": "grunt test"
   },
   "preferGlobal": true,
   "dependencies": {
