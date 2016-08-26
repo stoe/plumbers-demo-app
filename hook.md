@@ -1,1 +1,1 @@
-# hook test
+How to deploy a demo hook
