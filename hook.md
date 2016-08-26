@@ -1,6 +1,6 @@
 # hook test
 
 ```js
- console.log('\n-----\n');
+ console.log('foobar');
  ```
  
