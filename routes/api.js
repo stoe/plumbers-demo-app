@@ -33,7 +33,7 @@ function doNothing(res) {
   // console.log('\n-----\n');
   // </debug>
 
-  res.sendStatus(200);
+  res.sendStatus(204);
 }
 
 /**
@@ -108,20 +108,36 @@ router.post('/', (req, res) => {
 
   // booleans
   let isPR       = !!body && body.pull_request,
-      isComment  = body && body.comment,
-      isReaction = body && false;
+      isComment  = body && body.comment;
 
-  if (isPR) {
+  if (isPR && !['labeled', 'unlabeled'].includes(action)) {
 
     // <debug>
-    console.log('\n-----\n');
-    console.log(chalk.yellow('PR'));
-    console.log('\n-----\n');
+    // console.log('\n-----\n');
+    // console.log(chalk.yellow('PR'));
+    // console.log('\n-----\n');
     // </debug>
 
-    // todo
+    let pr     = body.pull_request,
+        user   = pr.user.login,
+        sha = pr.head.sha;
 
-    res.sendStatus(200);
+    let options = {
+      user: user,
+      repo: repo,
+      sha: sha,
+      state: 'pending',
+      context: pkg.name,
+      // description: pkg.name,
+    };
+
+    // <debug>
+    console.log(chalk.yellow('setStatusFromCommit:options'), options);
+    // </debug>
+
+    client.repos.createStatus(options).then(() => {
+      res.sendStatus(200);
+    }).catch(sendErrorResponse.bind(res));
 
   } else if (isComment) {
 
@@ -159,78 +175,11 @@ router.post('/', (req, res) => {
       }
     }).catch(sendErrorResponse.bind(res));
 
-  } else if (isReaction) {
-
-    // <debug>
-    console.log('\n-----\n');
-    console.log(chalk.yellow('REACTION'));
-    console.log('\n-----\n');
-    // </debug>
-
-    // todo
-
-    res.sendStatus(200);
-
+  } else {
+    doNothing(res);
   }
 
-  /*
-   if (action && ['created', 'edited'].includes(action) && body.comment) {
-   let comment   = body.comment,
-   user      = comment.user.login,
-   repo      = body.repository.name,
 
-   // <debug>
-   // console.log(chalk.yellow('body'), body);
-   // </debug>
-
-   client.pullRequests.getCommits({
-   user: user,
-   repo: repo,
-   number: body.issue.number,
-   per_page: 1
-   }).then((commits) => {
-   if (client.hasNextPage(commits)) {
-   // <debug>
-   console.log(chalk.yellow('next page'));
-   // </debug>
-
-   client.getLastPage(commits, getSha.call(client, commits, user, repo, isPlusOne, pkg, res));
-   } else {
-   // <debug>
-   console.log(chalk.yellow('next page'));
-   // </debug>
-
-   getSha.call(client, commits, user, repo, isPlusOne, pkg, res)
-   }
-
-   return;
-   });
-
-   return;
-   } else if (action && ['deleted'].includes(action) && body.comment) {
-   // <debug>
-   console.log(chalk.red('comment'), 'deleted');
-   // </debug>
-   }
-
-   // user = pr.user.login;
-   // repo = pr.head.repo.name;
-   // sha = pr.head.sha;
-   //
-   // console.log('\n-----\n');
-   // console.log(chalk.yellow('user'), user);
-   // console.log(chalk.yellow('repo'), repo);
-   // console.log(chalk.yellow('sha'), sha);
-
-   // opened, closed, reopened, edited, assigned, unassigned, labeled, unlabeled, or synchronized
-
-   if (pr && !['assigned', 'unassigned', 'labeled', 'unlabeled'].includes(action)) {
-   console.log('\n-----\n');
-   res.sendStatus(200);
-   } else {
-   doNothing(res);
-   }
-   */
 });
 
 module.exports = router;
