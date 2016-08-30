@@ -14,7 +14,7 @@
       2,
       "inside"
     ],
-    "strict": 2,
+    "strict": [1, "global"],
     "no-unused-vars": 1,
     "brace-style": [
       2,
