@@ -1,6 +1,10 @@
 language: node_js
 node_js:
-  - '6'
+  - 'lts/argon'
+  - 'node'
+  - 'iojs'
+  - '6.3'
+  - '6.4'
 
 notifications:
   email:
