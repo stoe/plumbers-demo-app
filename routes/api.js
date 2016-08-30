@@ -1,3 +1,5 @@
+'use strict';
+
 let express = require('express');
 let router = express.Router();
 let GitHubApi = require('github');
@@ -61,7 +63,7 @@ function sendErrorResponse(error) {
  */
 function setStatusFromComment(commits, user, repo, comment, res) {
   let isPlusOne = (utf8.encode(comment.body).indexOf('\xF0\x9F\x91\x8D')) > -1 || (comment.body.indexOf(':+1') > -1),
-      state     = (isPlusOne ? 'success' : 'pending');
+    state = (isPlusOne ? 'success' : 'pending');
 
   let options = {
     user: user,
@@ -89,8 +91,8 @@ router.get('/', (req, res) => {
 
 // POST method route
 router.post('/', (req, res) => {
-  let body   = req.body,
-      action = body.action || null;
+  let body = req.body,
+    action = body.action || null;
 
   // exit early
   if (!action) {
@@ -108,16 +110,16 @@ router.post('/', (req, res) => {
   let repo = body.repository.name;
 
   // booleans
-  let isPR      = !!body && body.pull_request,
-      isComment = body && body.comment;
+  let isPR = !!body && body.pull_request,
+    isComment = body && body.comment;
 
   // action types
   let triggerActions = [
-        'opened', 'reopened', 'edited', 'synchronized'
-      ],
-      ignoreActions  = [
-        'closed', 'assigned', 'unassigned', 'labeled', 'unlabeled'
-      ];
+      'opened', 'reopened', 'edited', 'synchronized'
+    ],
+    ignoreActions = [
+      'closed', 'assigned', 'unassigned', 'labeled', 'unlabeled'
+    ];
 
   if (isPR && !ignoreActions.includes(action) && triggerActions.includes(action)) {
 
@@ -129,9 +131,9 @@ router.post('/', (req, res) => {
     // console.log('\n-----\n');
     // </debug>
 
-    let pr   = body.pull_request,
-        user = pr.user.login,
-        sha  = pr.head.sha;
+    let pr = body.pull_request,
+      user = pr.user.login,
+      sha = pr.head.sha;
 
     let options = {
       user: user,
@@ -161,9 +163,9 @@ router.post('/', (req, res) => {
     // </debug>
 
     let comment = body.comment,
-        issue   = body.issue,
-        user    = issue.user.login,
-        number  = issue.number;
+      issue = body.issue,
+      user = issue.user.login,
+      number = issue.number;
 
     client.pullRequests.getCommits({
       user: user,

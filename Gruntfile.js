@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function(grunt) {
   let config = require('./grunt')(grunt);
 

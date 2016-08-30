@@ -1,7 +1,9 @@
+'use strict';
+
 module.exports = (grunt) => {
-  let fs      = require('fs'),
-      path    = require('path'),
-      configs = {};
+  let fs = require('fs'),
+    path = require('path'),
+    configs = {};
 
   configs.availabletasks = {
     tasks: {}
@@ -13,7 +15,7 @@ module.exports = (grunt) => {
     }
 
     let name = path.basename(file, '.js'),
-        conf = require('./' + name);
+      conf = require('./' + name);
 
     configs[name] = typeof conf === 'function' ? conf(grunt) : conf;
   });

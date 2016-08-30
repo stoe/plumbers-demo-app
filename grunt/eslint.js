@@ -5,6 +5,8 @@
  *
  * @returns {Object}
  */
+ 'use strict';
+
 module.exports = () => {
   let options = {
     configFile: '.eslintrc',
